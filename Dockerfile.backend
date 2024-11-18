@@ -15,8 +15,6 @@ RUN python manage.py makemigrations payments
 Run python manage.py makemigrations product
 
 # run migration if needed
-RUN $MIGRATE_DB && python manage.py migrate && python manage.py dumpdata --database=sqlite --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > datadump.json && python manage.py loaddata datadump.json && rm -f db.sqlite3
+RUN $MIGRATE_DB && python manage.py migrate && python manage.py dumpdata --database=sqlite --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > datadump.json && python manage.py loaddata datadump.json && rm -f db.sqlite3 || echo "pass migration"
 
-RUN touch app.log
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "app.log", "2>&1"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

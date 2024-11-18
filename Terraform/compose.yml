@@ -8,7 +8,7 @@ services:
       - MIGRATE_DB=${migrate}
     ports:
       - "8000:8000"
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "app.log", "2>&1"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
   frontend:
     image: postig0x/ecomm_front:latest
     ports:
