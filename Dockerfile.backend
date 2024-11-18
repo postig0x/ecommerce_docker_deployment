@@ -1,0 +1,22 @@
+FROM python:3.9
+
+EXPOSE 8000
+
+COPY backend backend-service
+
+WORKDIR backend-service
+
+RUN pip install -r requirements.txt && pip install django-environ
+
+RUN python manage.py makemigrations account
+
+RUN python manage.py makemigrations payments
+
+Run python manage.py makemigrations product
+
+# run migration if needed
+RUN $MIGRATE_DB && python manage.py migrate && python manage.py dumpdata --database=sqlite --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > datadump.json && python manage.py loaddata datadump.json && rm -f db.sqlite3
+
+RUN touch service.log
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "service.log", "2>&1"]
