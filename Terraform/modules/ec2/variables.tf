@@ -21,3 +21,11 @@ variable "private_subnet_id" {
 variable "key_name" {
   type = string
 }
+
+variable "rds_endpoint" {
+  type = string
+}
+
+variable "rds_instance" {
+  type = any
+}
