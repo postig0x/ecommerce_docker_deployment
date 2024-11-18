@@ -8,7 +8,7 @@ services:
       - MIGRATE_DB=${migrate}
     ports:
       - "8000:8000"
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "service.log", "2>&1"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "app.log", "2>&1"]
   frontend:
     image: <frontend image tagged for dockerhub>:latest
     ports:
