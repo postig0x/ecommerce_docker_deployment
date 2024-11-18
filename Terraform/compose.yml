@@ -13,5 +13,6 @@ services:
     image: <frontend image tagged for dockerhub>:latest
     ports:
       - "3000:3000"
+    command: ["npm", "start"]
     depends_on:
       - backend
