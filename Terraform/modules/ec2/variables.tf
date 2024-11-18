@@ -22,6 +22,14 @@ variable "key_name" {
   type = string
 }
 
+variable "docker_user" {
+  type = string
+}
+
+variable "docker_pass" {
+  type = string
+}
+
 variable "rds_endpoint" {
   type = string
 }

@@ -34,6 +34,8 @@ module "ec2" {
   key_name          = "wl6key"
   rds_endpoint      = module.rds.endpoint
   rds_instance      = module.rds.instance
+  docker_user       = var.docker_user
+  docker_pass       = var.docker_pass
 }
 
 module "load_balancer" {

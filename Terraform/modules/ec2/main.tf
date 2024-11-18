@@ -103,8 +103,9 @@ resource "aws_instance" "app" {
   key_name               = var.key_name
 
   user_data = templatefile("${path.root}/deploy.sh", {
-    dummy = "hello",
-    # rds_endpoint = var.rds_endpoint,
+    rds_endpoint = var.rds_endpoint,
+    docker_user  = var.docker_user,
+    docker_pass  = var.docker_pass,
     docker_compose = templatefile("${path.root}/compose.yml", {
       rds_endpoint = var.rds_endpoint,
       migrate      = count.index == 0 ? true : false
