@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: <backend image tagged for dockerhub>:latest
+    image: postig0x/ecomm_back:latest
     environment:
       - DB_HOST=${rds_endpoint}
       - MIGRATE_DB=${migrate}
@@ -10,7 +10,7 @@ services:
       - "8000:8000"
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000", ">", "app.log", "2>&1"]
   frontend:
-    image: <frontend image tagged for dockerhub>:latest
+    image: postig0x/ecomm_front:latest
     ports:
       - "3000:3000"
     command: ["npm", "start"]
