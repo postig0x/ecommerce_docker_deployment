@@ -69,7 +69,7 @@ resource "aws_lb" "app_lb" {
   enable_deletion_protection = false
 
   subnets = [
-    var.public_subnet_id[*]
+    for subnet_id in var.public_subnet_id : subnet_id
   ]
 }
 
