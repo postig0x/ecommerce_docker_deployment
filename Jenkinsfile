@@ -13,7 +13,9 @@ pipeline {
       }
       steps {
         sh '''#!/bin/bash
-        <code to build the application>
+        python3.9 -m venv backend/venv
+        source backend/venv/bin/activate
+        pip install -r backend/requirements.txt
         '''
       }
     }
@@ -25,7 +27,7 @@ pipeline {
       }
       steps {
         sh '''#!/bin/bash
-        <code to activate virtual environment>
+        source backend/venv/bin/activate
         pip install pytest-django
         python backend/manage.py makemigrations
         python backend/manage.py migrate
@@ -60,14 +62,14 @@ pipeline {
         
         // Build and push backend
         sh '''
-          docker build -t <backend image tagged for dockerhub>:latest -f Dockerfile.backend .
-          docker push <backend image tagged for dockerhub:latest
+          docker build -t postig0x/ecomm_back:latest -f Dockerfile.backend .
+          docker push postig0x/ecomm_back:latest
         '''
         
         // Build and push frontend
         sh '''
-          docker build -t <frontent image tagged for dockerhub>:latest -f Dockerfile.frontend .
-          docker push <frontend image tagged for dockerhub>:latest
+          docker build -t postig0x/ecomm_front:latest -f Dockerfile.frontend .
+          docker push postig0x/ecomm_front:latest
         '''
       }
     }
@@ -82,8 +84,8 @@ pipeline {
           sh '''
             terraform init
             terraform apply -auto-approve \
-              -var="dockerhub_username=${DOCKER_CREDS_USR}" \
-              -var="dockerhub_password=${DOCKER_CREDS_PSW}"
+              -var="docker_user=${DOCKER_CREDS_USR}" \
+              -var="docker_pass=${DOCKER_CREDS_PSW}"
           '''
         }
       }
