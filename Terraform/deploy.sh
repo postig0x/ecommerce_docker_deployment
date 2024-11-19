@@ -24,6 +24,38 @@ sudo apt update
 # install git, curl, wget
 sudo apt install -y git curl wget
 
+#               _                             _           
+#  _ _  ___  __| |___   _____ ___ __  ___ _ _| |_ ___ _ _ 
+# | ' \/ _ \/ _` / -_) / -_) \ / '_ \/ _ \ '_|  _/ -_) '_|
+# |_||_\___/\__,_\___| \___/_\_\ .__/\___/_|  \__\___|_|  
+#                              |_|                        
+# version 1.8.2
+wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+tar xvfz node_exporter-*.*-amd64.tar.gz
+sudo mv node_exporter-*.*-amd64/node_exporter /usr/local/bin
+rm -rf node_exporter-*.*-amd64*
+
+cat << EOF | sudo tee /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=ubuntu
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+sudo systemctl enable node_exporter
+
+echo "Node Exporter installation complete. Available on port :9100/metrics"
+
 #     _         _           
 #  __| |___  __| |_____ _ _ 
 # / _` / _ \/ _| / / -_) '_|
@@ -55,8 +87,10 @@ cat > docker-compose.yml <<EOF
 ${docker_compose}
 EOF
 
-#               _                             _           
-#  _ _  ___  __| |___   _____ ___ __  ___ _ _| |_ ___ _ _ 
-# | ' \/ _ \/ _` / -_) / -_) \ / '_ \/ _ \ '_|  _/ -_) '_|
-# |_||_\___/\__,_\___| \___/_\_\ .__/\___/_|  \__\___|_|  
-#                              |_|                        
+docker-compose pull
+docker-compose up -d --force-recreate
+echo "app deployed."
+
+# clean and logout of dockerhub
+docker system prune -f
+docker logout
