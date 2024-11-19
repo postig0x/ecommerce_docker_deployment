@@ -8,6 +8,9 @@ pipeline {
   stages {
     stage ('Build') {
       agent any
+      when {
+        branch 'main'
+      }
       steps {
         sh '''#!/bin/bash
         <code to build the application>
@@ -17,6 +20,9 @@ pipeline {
 
     stage ('Test') {
       agent any
+      when {
+        branch 'main'
+      }
       steps {
         sh '''#!/bin/bash
         <code to activate virtual environment>
@@ -30,6 +36,9 @@ pipeline {
 
     stage('Cleanup') {
       agent { label 'build-node' }
+      when {
+        branch 'main'
+      }
       steps {
         sh '''
           # Only clean Docker system
@@ -43,6 +52,9 @@ pipeline {
 
     stage('Build & Push Images') {
       agent { label 'build-node' }
+      when {
+        branch 'main'
+      }
       steps {
         sh 'echo ${DOCKER_CREDS_PSW} | docker login -u ${DOCKER_CREDS_USR} --password-stdin'
         
@@ -62,6 +74,9 @@ pipeline {
 
     stage('Infrastructure') {
       agent { label 'build-node' }
+      when {
+        branch 'main'
+      }
       steps {
         dir('Terraform') {
           sh '''
@@ -78,6 +93,9 @@ pipeline {
   post {
     always {
       agent { label 'build-node' }
+      when {
+        branch 'main'
+      }
       steps {
         sh '''
           docker logout
