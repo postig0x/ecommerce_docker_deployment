@@ -12,11 +12,13 @@ pipeline {
         branch 'main'
       }
       steps {
-        sh '''#!/bin/bash
-        python3.9 -m venv backend/venv
-        source backend/venv/bin/activate
-        pip install -r backend/requirements.txt
-        '''
+        dir('backend') {
+          sh '''#!/bin/bash
+          python3.9 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          '''
+        }
       }
     }
 
@@ -26,13 +28,15 @@ pipeline {
         branch 'main'
       }
       steps {
-        sh '''#!/bin/bash
-        source backend/venv/bin/activate
-        pip install pytest-django
-        python backend/manage.py makemigrations
-        python backend/manage.py migrate
-        pytest backend/account/tests.py --verbose --junit-xml test-reports/results.xml
-        ''' 
+        dir('backend') {
+          sh '''#!/bin/bash
+          source venv/bin/activate
+          pip install pytest-django
+          python manage.py makemigrations
+          python manage.py migrate
+          pytest account/tests.py --verbose --junit-xml test-reports/results.xml
+          ''' 
+        }
       }
     }
 
