@@ -27,6 +27,9 @@ pipeline {
       when {
         branch 'main'
       }
+      environment {
+        DJANGO_TEST_ENV = 'true'
+      }
       steps {
         dir('backend') {
           sh '''#!/bin/bash
