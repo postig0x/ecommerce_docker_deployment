@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'my_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if !isTesting:
+if not isTesting:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
